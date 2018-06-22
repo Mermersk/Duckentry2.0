@@ -18,6 +18,11 @@ function duck:initialize()
 	self.ond_x_scale = 0.7
 	self.ond_y_scale = 0.7
 
+  self.ond_collision_x = self.ond_x + 10  --Because i want the collision circle to be a bit different than the normal xy of the brid
+  self.ond_collision_y = self.ond_y - 5
+
+  self.ond_collision_radius = 16
+
   self.movement_mode = 1
 
   --Movement_mode: 1 = in the opening cinematic with the zzz bubbles
@@ -104,6 +109,10 @@ function duck:update(dt)
  		  end
 
     end
+    --In update since i need to update these variables as well with the movement of the duck
+    self.ond_collision_x = self.ond_x + 10  --Because i want the collision circle to be a bit different than the normal xy of the brid
+    self.ond_collision_y = self.ond_y - 5
+
 
 end
 
@@ -111,7 +120,7 @@ function duck:draw()
 
   self.hond:draw(self.ond_x, self.ond_y, self.ond_rot, self.ond_x_scale, self.ond_y_scale, 60, 44)
 
-  love.graphics.circle("fill", self.ond_x, self.ond_y, self.ond:getHeight()*0.2, 16)
+  --love.graphics.circle("fill", self.ond_collision_x, self.ond_collision_y, self.ond_collision_radius, 16)
 
 end
 

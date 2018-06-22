@@ -3,34 +3,71 @@
 local duck = require("Scripts/duck")
 local star = require("Scripts/stars")
 local asteroid = require("Scripts/asteroids")
-local asteroid_yellow = require("Scripts/asteroids")
+local zzz = require("Scripts/zzz")
+local thoughtBubble = require("Scripts/thoughtBubble")
+local nebula = require("Scripts/nebula")
+local lifeBar =require("Scripts/lifebar")
+
 
 function love.load()
   --Fonts
   font = love.graphics.newFont("Resources/Dimbo Regular.ttf", 18) --Venjulegi
   font2 = love.graphics.newFont("Resources/Dimbo Regular.ttf", 30) --Stærri fonturinn
 
-  duck:initialize()
-  star:initialize()
-  asteroid:initialize("Resources/ast.png")
-  asteroid_yellow:initialize("Resources/ast2.png") --Same as asteroid just with another image, has some yellow colors in it
+  --duck:initialize()
+  duck = duck:new() --new() is a static method of every class, if obj:initialize() is in the class than new() will take those arguments,
+  star = star:new()
+  asteroid_grey = asteroid:new("Resources/ast.png")
+  asteroid_yellow = asteroid:new("Resources/ast2.png") --Same as asteroid just with another image, has some yellow colors in it
+  thoughtBubble1 = thoughtBubble:new("Resources/hugs2.png", 20) --In middleclass new is a taken keywor to create a new object of x class
+  thoughtBubble2 = thoughtBubble:new("Resources/hugs3.png", 30) --f. ex. 30 represents that it will be drawn after 30 seconds, connected to the master_timer
+  thoughtBubble3 = thoughtBubble:new("Resources/hugs4.png", 40)
+  zzz = zzz:new()
+  nebula = nebula:new()
+  lifeBar = lifeBar:new()
 
   --Movement_mode: 1 = in the opening cinematic with the zzz bubbles
   --2 = in space without gravity
   --3 = in space with gravity
   --4 = Ending cutscene on beziercurve
-  duck:setMovementMode(1)
+  duck:setMovementMode(2)
+  master_timer = 0 --master_timer is the main timer in the game begins at 0 in beginning and counts up in sconds
+
+  paused = false
+  lifeBar:subtract()
+  lifeBar:subtract()
+  lifeBar:subtract()
+  lifeBar:subtract()
 
 end
 
 function love.update(dt)
 
+  for i = 1, #asteroid_grey.aster do
+    if circlecollision2(duck.ond_collision_x, duck.ond_collision_y, asteroid_grey.aster[i].ast_x, asteroid_grey.aster[i].ast_y, duck.ond_collision_radius, asteroid_grey.asteroid_collision_radius) == true then
+      return
+    end
+  end
+
+  for i = 1, #asteroid_yellow.aster do
+    if circlecollision2(duck.ond_collision_x, duck.ond_collision_y, asteroid_yellow.aster[i].ast_x, asteroid_yellow.aster[i].ast_y, duck.ond_collision_radius, asteroid_yellow.asteroid_collision_radius) == true then
+      return
+    end
+  end
+
   duck:update(dt)
   star:update(dt)
-  asteroid:update(dt)
+  asteroid_grey:update(dt)
   asteroid_yellow:update(dt)
+  thoughtBubble1:update(dt, master_timer)
+  thoughtBubble2:update(dt, master_timer)
+  thoughtBubble3:update(dt, master_timer)
+  zzz:update(dt, master_timer)
+  nebula:update(dt)
+  lifeBar:update(dt)
 
-  --if circlecollision(duck.ond_x, duck.ond_y, asteroid.)
+  master_timer = master_timer + dt
+
 
 end
 
@@ -39,13 +76,30 @@ function love.draw()
   love.graphics.setFont(font) --Setting the font
   star:draw()
   duck:draw()
-  asteroid:draw()
+  asteroid_grey:draw()
   asteroid_yellow:draw()
-  love.graphics.print(asteroid.aster[1].ast_x)
+  zzz:draw(master_timer, duck.ond_y, font2)
+  nebula:draw()
+  lifeBar:draw()
+
+  for i = 1, #asteroid_grey.aster do
+    love.graphics.line(duck.ond_x, duck.ond_y, asteroid_grey.aster[i].ast_x, asteroid_grey.aster[i].ast_y)  --Skemmtilegar linur!
+  end
+  for i = 1, #asteroid_yellow.aster do
+    love.graphics.line(duck.ond_x, duck.ond_y, asteroid_yellow.aster[i].ast_x, asteroid_yellow.aster[i].ast_y)  --Skemmtilegar linur!
+  end
+  love.graphics.print(master_timer)
+
+  thoughtBubble1:draw(duck.ond_x, duck.ond_y)
+  thoughtBubble2:draw(duck.ond_x, duck.ond_y)
+  thoughtBubble3:draw(duck.ond_x, duck.ond_y)
 
 end
 
-
+--Collision detection
+--byr til tvo hringi utan um hlutina og gáir hvort þeir eru að klessa
+--ax, bx, ay, by eru x- og y - hnit tveggja hluta á færingu
+--iaw = image-a-width svo iay = image.a.height, ibw = image-b-width
 
 function circlecollision(ax, ay, bx, by, iaw, iah, ibw, ibh)
     if math.abs(ax - bx) * 2 < (iaw + ibw) and
