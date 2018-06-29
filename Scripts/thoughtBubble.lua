@@ -48,6 +48,7 @@ function thoughtBubble:draw(x, y)
     love.graphics.draw(self.hugs, x_offset, y_offset, 0, self.scale, self.scale)
     love.graphics.setColor(1, 1, 1, 1)
 
+    love.graphics.print(y_offset, 0, 100)
   end
 
 
@@ -55,12 +56,12 @@ end
 
 function hugs(start, hvelengi, mynd) --function til að auðvelda teikningu hugsanna, hvenær í leiknum það á að gerast
 
-    if start < timer and start + hvelengi > timer and alpha < 246 then
-	    alpha = alpha + 8
-		fade = false
-	else
-	    fade = true
-	end
+  if start < timer and start + hvelengi > timer and alpha < 246 then
+	   alpha = alpha + 8
+		 fade = false
+	   else
+	   fade = true
+	 end
 
 	if start < timer and start + hvelengi + 2 > timer then --Annars teiknar hún bara allar hugsanir samtímis! + 2 þýðir að animationið fær 2 sek til að hverfa(alpha að lækka)
 	   setColor(211, 211, 211, alpha)

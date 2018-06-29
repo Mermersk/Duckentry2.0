@@ -15,11 +15,21 @@ function reset:initialize()
   self.box_width = 90
   self.box_height = 45
 
+  self.text = "Reset?"
   self.text_x = 195
-  self.text_y = 135
+  self.text_y = 130
 
   self.active = false
+  self.font = font2
 
+end
+
+function reset:setText(string)
+  self.text = string
+end
+
+function reset:setFont(font)
+  self.font = font
 end
 
 function reset:setActive(boolean)
@@ -52,8 +62,8 @@ function reset:draw()
     setColor(self.color_r, self.color_g, self.color_b)
     love.graphics.rectangle("fill", self.box_x, self.box_y, self.box_width, self.box_height)
     setColor(255, 255, 255)
-    love.graphics.setFont(font2)
-    love.graphics.print("Reset?", self.text_x, self.text_y)
+    love.graphics.setFont(self.font)
+    love.graphics.print(self.text, self.text_x, self.text_y)
   end
 
 end

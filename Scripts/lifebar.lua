@@ -16,7 +16,11 @@ function lifeBar:initialize()
   for i = 1, lifeBar.number_of_lifes do
     table.insert(self.lifes, {x = 350 + i*30, y = 5, scale_x = lifeBar.scale, scale_y = lifeBar.scale, active = true})
   end
+  self.lifes_left = lifeBar.number_of_lifes
+end
 
+function lifeBar:getLifes()
+  return self.lifes_left
 end
 
 function lifeBar:update(dt)
@@ -41,6 +45,7 @@ function lifeBar:subtract()
   if self.index <= lifeBar.number_of_lifes then
     self.lifes[self.index].active = false
     self.index = self.index + 1
+    self.lifes_left = self.lifes_left - 1
   end
 
 end

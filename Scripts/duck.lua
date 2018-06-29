@@ -31,8 +31,14 @@ function duck:initialize()
   --4 = Ending cutscene on beziercurve
 
   self.vuff = love.audio.newSource("Resources/vaengir-noiseremoved.ogg", "static")
-	self.vuff:setVolume(1.8)
+	self.vuff:setVolume(1.0)
   self.vuff_play = false
+end
+
+function duck:setY(number)
+  self.ond_collision_y = number
+  self.ond_y = number
+  self.ond_speed = 0 --Put speed to zero so duck doesnt continu with the momentum when it crashes
 end
 
 function duck:getMovemmentMode()
@@ -120,7 +126,7 @@ function duck:draw()
 
   self.hond:draw(self.ond_x, self.ond_y, self.ond_rot, self.ond_x_scale, self.ond_y_scale, 60, 44)
 
-  --love.graphics.circle("fill", self.ond_collision_x, self.ond_collision_y, self.ond_collision_radius, 16)
+  love.graphics.circle("fill", self.ond_collision_x, self.ond_collision_y, self.ond_collision_radius, 16)
 
 end
 
