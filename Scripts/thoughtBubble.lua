@@ -48,7 +48,7 @@ function thoughtBubble:draw(x, y)
     love.graphics.draw(self.hugs, x_offset, y_offset, 0, self.scale, self.scale)
     love.graphics.setColor(1, 1, 1, 1)
 
-    love.graphics.print(y_offset, 0, 100)
+    --love.graphics.print(y_offset, 0, 100)
   end
 
 

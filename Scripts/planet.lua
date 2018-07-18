@@ -6,10 +6,11 @@ local planet = class("planet")
 
 function planet:initialize(start)
 
-  self.planet = planetGen(30, 125, 80, 2.667)
-  self.planet_x = -25
-  self.planet_y = -25
-  self.planet_speed = 400 --ATH planet speed should be 40 in final version
+  --self.planet = planetGen(30, 125, 80, 2.667)
+  self.planet = love.graphics.newImage("Resources/jord.png")
+  self.planet_x = -25 --Original á að ver -25
+  self.planet_y = -25  --Original á að ver -25
+  self.planet_speed = 40 --ATH planet speed should be 40 in final version
   self.starting_time = start
   --data = self.planet:newImageData()
   self.active = false
@@ -68,8 +69,8 @@ function planetGen(hringir, circle_size, alpha_start, alpha_decrease)  --Gufuhvo
 	for i = 1, hringir do
         cir[i] = {radius = 2 + (i * circle_size) - circle_size, alpha = alpha_start + (i * -alpha_decrease) + alpha_decrease}  --Með alpahið, þá fer hvert gildi hærra um 2 ! ég geri -2 svo að fyrsta gildið byrji í 100, svo 102 og so on
     end
-
-	local planetan = love.graphics.newCanvas(2800, 2800) --3070x3070 original
+  --local settings = {"2d", "rgba4", true, 0, love.graphics.getDPIScale(), "none"}
+	local planetan = love.graphics.newCanvas(1000, 1000) --2800, 2800 original  2000*3 = 6000 (error on my adnroid phone)
 	love.graphics.setCanvas(planetan)
 	--love.graphics.clear(0,0,0,0)
 	love.graphics.setBlendMode("alpha")

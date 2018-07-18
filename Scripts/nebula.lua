@@ -13,7 +13,8 @@ function nebula:initialize()
   end
 
   self.active = true
-  self.opacity = 50
+  self.disable = false
+  self.opacity = 35
 end
 
 function nebula:setActive(boolean)
@@ -22,36 +23,43 @@ end
 
 function nebula:update(dt)
 
+    if self.disable == false then
+      for lykill, gildi in pairs(self.nebulas) do
+        gildi.rammi_x = gildi.rammi_x - gildi.rammi_speed*dt
 
-    for lykill, gildi in pairs(self.nebulas) do
-      gildi.rammi_x = gildi.rammi_x - gildi.rammi_speed*dt
-
-      if gildi.rammi_x < -400 then
-        gildi.rammi_x = love.math.random(500, 620)
-        gildi.rammi_y = love.math.random(-200, 140)
-        gildi.rammi_speed = love.math.random(15, 30)
-        gildi.nebulat = nebulaGen(love.math.random(14, 30))
-        gildi.rammi_scale = love.math.random(5, 12)/10
+        if gildi.rammi_x < -400 then
+          gildi.rammi_x = love.math.random(500, 620)
+          gildi.rammi_y = love.math.random(-200, 140)
+          gildi.rammi_speed = love.math.random(15, 30)
+          gildi.nebulat = nebulaGen(love.math.random(14, 30))
+          gildi.rammi_scale = love.math.random(5, 12)/10
+        end
       end
     end
 
   if self.active == false then
     if self.opacity > 1 then
-      self.opacity = self.opacity - 5.5*dt
+      self.opacity = self.opacity - 15*dt
+    end
+    if self.opacity < 10 then
+      self.disable = true
     end
   end
 
 
 end
 
-function nebula:draw()
-
-    for lykill, gildi in pairs(self.nebulas) do
-      setColor(255, 255, 255, self.opacity)
-      love.graphics.draw(gildi.nebulat, gildi.rammi_x, gildi.rammi_y, 0, gildi.rammi_scale, gildi.rammi_scale)  --teikna nebulaið
-      setColor(255, 255, 255, 255)
+function nebula:draw(push)
+    if self.disable == false then
+      for lykill, gildi in pairs(self.nebulas) do
+        setColor(255, 255, 255, self.opacity)
+        push:start()
+        love.graphics.draw(gildi.nebulat, gildi.rammi_x, gildi.rammi_y, 0, gildi.rammi_scale, gildi.rammi_scale)  --teikna nebulaið
+        push:finish()
+        setColor(255, 255, 255, 255)
+      end
     end
-
+    --love.graphics.print(tostring(self.disable), 0, 100)
 
 end
 
@@ -67,7 +75,7 @@ function nebulaGen(circles)  --Nebula creator!!! circles = þykkni nebulans, ram
 	g = love.math.random(0, 255)
 	b = love.math.random(0, 255)
 
-	rammi = love.graphics.newCanvas(400, 400)
+	local rammi = love.graphics.newCanvas(400, 400)
 
 	love.graphics.setCanvas(rammi)
 	    love.graphics.clear(0, 0, 0, 0)

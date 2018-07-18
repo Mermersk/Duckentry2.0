@@ -24,7 +24,7 @@ function asteroid:initialize(image)
 
   self.p_rot = 0
   self.p_opacity = 0
-  self.p_asteroid = love.graphics.newParticleSystem(self.p_image, 500)
+  self.p_asteroid = love.graphics.newParticleSystem(self.p_image, 100) --Original 500
   self.p_asteroid:setEmissionRate(60)
   self.p_asteroid:setParticleLifetime(2)
   self.p_asteroid:setDirection(self.p_rot)

@@ -13,8 +13,8 @@ function duck:initialize()
 	self.ond_y = 150
 	self.ond_rot = 3.14
 	self.ond_speed = 1
-	self.ond_upp = 15
-	self.ond_down = 15
+	self.ond_upp = 35  --15
+	self.ond_down = 35  --15
 	self.ond_x_scale = 0.7
 	self.ond_y_scale = 0.7
 
@@ -31,8 +31,20 @@ function duck:initialize()
   --4 = Ending cutscene on beziercurve
 
   self.vuff = love.audio.newSource("Resources/vaengir-noiseremoved.ogg", "static")
-	self.vuff:setVolume(1.0)
+	self.vuff:setVolume(1.5)
   self.vuff_play = false
+end
+
+function duck:setScaleY(number)
+  self.ond_y_scale = number
+end
+
+function duck:setScaleX(number)
+  self.ond_x_scale = number
+end
+
+function duck:setRotation(number)
+  self.ond_rot = number
 end
 
 function duck:setY(number)
@@ -53,7 +65,7 @@ function duck:setWingAudio(boolean)
   self.vuff_play = boolean
 end
 
-function duck:update(dt)
+function duck:update(dt, push)
 
     if self.vuff_play == true then --The noise from the wings, should only be played once inside of the planet
       love.audio.play(self.vuff)
@@ -62,11 +74,15 @@ function duck:update(dt)
     end
 
     self.mx, self.my = love.mouse.getPosition()
+    local sx, sy = push:toGame(self.mx, self.my)
 
     if self.movement_mode == 2 or self.movement_mode == 3 then  --only update animation if bird is in space with or without gravity, but not in the start and end.
       self.hond:update(dt) --Animation updater
-    else
+    else if self.movement_mode == 1 then
       self.hond:seek(5) --seek stoppar animationið bara á einu frame-i! hond er 5 frame animation
+    else
+      self.hond:seek(2)
+    end
     end
 
 
@@ -81,10 +97,10 @@ function duck:update(dt)
     if self.movement_mode == 2 then
       --Movement without gravity
       if love.mouse.isDown(1) then  --timer bara vegna opening cutscene!
-        if self.my > self.ond_y and self.ond_y < 290 then  --movement sytem i engu þyngdarafli
+        if sy > self.ond_y and self.ond_y < 290 then  --movement sytem i engu þyngdarafli
           self.ond_y = self.ond_y + 50*dt
         end
-        if self.my < self.ond_y and self.ond_y > 20 then
+        if sy < self.ond_y and self.ond_y > 20 then
           self.ond_y = self.ond_y - 50*dt
         end
       end
@@ -126,7 +142,7 @@ function duck:draw()
 
   self.hond:draw(self.ond_x, self.ond_y, self.ond_rot, self.ond_x_scale, self.ond_y_scale, 60, 44)
 
-  love.graphics.circle("fill", self.ond_collision_x, self.ond_collision_y, self.ond_collision_radius, 16)
+  --love.graphics.circle("fill", self.ond_collision_x, self.ond_collision_y, self.ond_collision_radius, 16)
 
 end
 

@@ -9,7 +9,7 @@ function cloud:initialize()
 
   self.clouds_table = {}
 	for i = 1, 6 do
-	    self.clouds_table[i] = {sky_x = love.math.random(500, 800), sky_y = love.math.random(30, 330), sky_speed = love.math.random(40, 60), scale = love.math.random(5, 10)/10, sky_alpha = love.math.random(75, 230)}
+	    self.clouds_table[i] = {sky_x = love.math.random(500, 800), sky_y = love.math.random(30, 330), sky_speed = love.math.random(40, 60), scale = love.math.random(5, 10)/10, sky_alpha = love.math.random(100, 210)}
 	end
   self.switch_to_forest = false
   self.clouds_cycles = 0

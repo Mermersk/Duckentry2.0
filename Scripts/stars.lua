@@ -22,10 +22,6 @@ function star:update(dt)
       gildi.yhnit = love.math.random(0, 320)
     end
 
-    --if utmork_planetu < 2500 and gildi.a > 5 then  --Svo að stjörnurnar sjást ekki í gegnum plánetuna
-      --gildi.a = gildi.a - 10*dt
-    --end
-
   end
 
 end
